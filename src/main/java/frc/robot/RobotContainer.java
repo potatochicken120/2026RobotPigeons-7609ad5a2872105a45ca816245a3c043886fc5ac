@@ -98,6 +98,14 @@ public class RobotContainer {
         return driverTrigger(() -> driver.getHID().getPOV() == 180);
     }
 
+    private Trigger driverPovRight() {
+        return driverTrigger(() -> driver.getHID().getPOV() == 90);
+    }
+
+    private Trigger driverPovLeft() {
+        return driverTrigger(() -> driver.getHID().getPOV() == 270);
+    }
+
     private final SwerveTelemetry swerveTelemetry = new SwerveTelemetry(Driving.kMaxSpeed.in(MetersPerSecond));
 
     private final AutoRoutines autoRoutines = new AutoRoutines(
@@ -153,6 +161,9 @@ public class RobotContainer {
 
         driverPovUp().onTrue(hanger.positionCommand(Hanger.Position.HANGING));
         driverPovDown().onTrue(hanger.positionCommand(Hanger.Position.HUNG));
+
+        driverPovRight().onTrue(Commands.runOnce(() -> hood.cycleStage()));
+        driverPovLeft().onTrue(Commands.runOnce(() -> hood.cycleStage()));        
     }
 
     private void configureManualDriveBindings() {
